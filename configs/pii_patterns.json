@@ -1,0 +1,325 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-03-20",
+  "description": "PII-Erkennungsmuster fuer AI-Agent Compliance. 30+ Regex-Patterns fuer personenbezogene Daten.",
+  "total_patterns": 32,
+
+  "patterns": [
+    {
+      "id": "email",
+      "name": "E-Mail-Adresse",
+      "category": "contact",
+      "severity": "medium",
+      "pattern": "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}",
+      "examples": ["user@example.com", "name.nachname@firma.de"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "phone_international",
+      "name": "Telefonnummer (International)",
+      "category": "contact",
+      "severity": "medium",
+      "pattern": "\\+?[1-9]\\d{1,14}",
+      "examples": ["+49 170 1234567", "+1 555 123 4567"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "phone_de",
+      "name": "Telefonnummer (Deutschland)",
+      "category": "contact",
+      "severity": "medium",
+      "pattern": "(?:\\+49|0049|0)[1-9]\\d{1,14}",
+      "examples": ["0170 1234567", "+49 30 12345678"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "iban",
+      "name": "IBAN (International)",
+      "category": "financial",
+      "severity": "high",
+      "pattern": "[A-Z]{2}\\d{2}[A-Z0-9]{4}\\d{7}(?:[A-Z0-9]{0,18})",
+      "examples": ["DE89 3704 0044 0532 0130 00", "GB29 NWBK 6016 1331 9268 19"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "credit_card",
+      "name": "Kreditkartennummer",
+      "category": "financial",
+      "severity": "critical",
+      "pattern": "(?:4\\d{3}|5[1-5]\\d{2}|6011|3[47]\\d{2})[- ]?\\d{4}[- ]?\\d{4}[- ]?\\d{4}",
+      "examples": ["4111 1111 1111 1111", "5500-0000-0000-0004"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "bic_swift",
+      "name": "BIC/SWIFT-Code",
+      "category": "financial",
+      "severity": "medium",
+      "pattern": "[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}(?:[A-Z0-9]{3})?",
+      "examples": ["COBADEFFXXX", "DEUTDEDB"],
+      "gdpr_relevant": false
+    },
+    {
+      "id": "german_tax_id",
+      "name": "Steuer-ID (Deutschland)",
+      "category": "government_id",
+      "severity": "high",
+      "pattern": "\\b\\d{11}\\b",
+      "context_required": "steuer|tax|finanzamt",
+      "examples": ["12 345 678 901"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "german_social_security",
+      "name": "Sozialversicherungsnummer (DE)",
+      "category": "government_id",
+      "severity": "critical",
+      "pattern": "\\b\\d{2}\\s?\\d{6}\\s?[A-Z]\\s?\\d{3}\\b",
+      "examples": ["12 010275 A 123"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "german_id_card",
+      "name": "Personalausweisnummer (DE)",
+      "category": "government_id",
+      "severity": "critical",
+      "pattern": "[CFGHJKLMNPRTVWXYZ0-9]{9}D?",
+      "context_required": "ausweis|personalausweis|identity",
+      "examples": ["L01X00T47"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "german_passport",
+      "name": "Reisepassnummer (DE)",
+      "category": "government_id",
+      "severity": "critical",
+      "pattern": "[CFGHJK][CFGHJKLMNPRTVWXYZ0-9]{8}",
+      "context_required": "pass|passport|reisepass",
+      "examples": ["C01X00T47"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "us_ssn",
+      "name": "US Social Security Number",
+      "category": "government_id",
+      "severity": "critical",
+      "pattern": "\\b\\d{3}[- ]?\\d{2}[- ]?\\d{4}\\b",
+      "examples": ["123-45-6789", "123 45 6789"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "us_ein",
+      "name": "US Employer Identification Number",
+      "category": "government_id",
+      "severity": "high",
+      "pattern": "\\b\\d{2}[- ]?\\d{7}\\b",
+      "context_required": "ein|employer|tax",
+      "examples": ["12-3456789"],
+      "gdpr_relevant": false
+    },
+    {
+      "id": "uk_nino",
+      "name": "UK National Insurance Number",
+      "category": "government_id",
+      "severity": "critical",
+      "pattern": "[A-CEGHJ-PR-TW-Z][A-CEGHJ-NPR-TW-Z]\\d{6}[A-D]",
+      "examples": ["AB123456C"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "ip_address_v4",
+      "name": "IPv4-Adresse",
+      "category": "technical",
+      "severity": "low",
+      "pattern": "\\b(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\.(?:25[0-5]|2[0-4]\\d|[01]?\\d\\d?)\\b",
+      "examples": ["192.168.1.1", "10.0.0.1"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "ip_address_v6",
+      "name": "IPv6-Adresse",
+      "category": "technical",
+      "severity": "low",
+      "pattern": "(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}",
+      "examples": ["2001:0db8:85a3:0000:0000:8a2e:0370:7334"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "mac_address",
+      "name": "MAC-Adresse",
+      "category": "technical",
+      "severity": "low",
+      "pattern": "(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}",
+      "examples": ["00:1B:44:11:3A:B7"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "date_of_birth",
+      "name": "Geburtsdatum",
+      "category": "personal",
+      "severity": "medium",
+      "pattern": "\\b(?:0[1-9]|[12]\\d|3[01])[./](?:0[1-9]|1[0-2])[./](?:19|20)\\d{2}\\b",
+      "examples": ["15.03.1990", "01/12/1985"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "date_of_birth_iso",
+      "name": "Geburtsdatum (ISO-Format)",
+      "category": "personal",
+      "severity": "medium",
+      "pattern": "\\b(?:19|20)\\d{2}[/-](?:0[1-9]|1[0-2])[/-](?:0[1-9]|[12]\\d|3[01])\\b",
+      "context_required": "birth|geburt|dob|geboren",
+      "examples": ["1990-03-15"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "german_postal_code",
+      "name": "Postleitzahl (DE)",
+      "category": "location",
+      "severity": "low",
+      "pattern": "\\b\\d{5}\\b",
+      "context_required": "plz|postleitzahl|zip|adresse|address",
+      "examples": ["10115", "80331"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "street_address_de",
+      "name": "Strassenadresse (DE)",
+      "category": "location",
+      "severity": "medium",
+      "pattern": "[A-ZÄÖÜ][a-zäöüß]+(?:straße|strasse|str\\.|weg|platz|allee|gasse|ring|damm)\\s+\\d+[a-zA-Z]?",
+      "examples": ["Hauptstraße 42", "Berliner Str. 7a"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "vehicle_plate_de",
+      "name": "KFZ-Kennzeichen (DE)",
+      "category": "personal",
+      "severity": "medium",
+      "pattern": "[A-ZÄÖÜ]{1,3}[- ]?[A-Z]{1,2}[- ]?\\d{1,4}[EH]?",
+      "examples": ["B AB 1234", "M-XY 567"],
+      "gdpr_relevant": true
+    },
+    {
+      "id": "health_insurance_de",
+      "name": "Krankenversicherungsnummer (DE)",
+      "category": "health",
+      "severity": "critical",
+      "pattern": "[A-Z]\\d{9}",
+      "context_required": "versicherung|insurance|krankenkasse|kvnr",
+      "examples": ["A123456789"],
+      "gdpr_relevant": true,
+      "special_category": true
+    },
+    {
+      "id": "icd_code",
+      "name": "ICD-Diagnosecode",
+      "category": "health",
+      "severity": "critical",
+      "pattern": "[A-Z]\\d{2}(?:\\.\\d{1,2})?",
+      "context_required": "diagnose|diagnosis|icd|medical",
+      "examples": ["J06.9", "I10"],
+      "gdpr_relevant": true,
+      "special_category": true
+    },
+    {
+      "id": "blood_type",
+      "name": "Blutgruppe",
+      "category": "health",
+      "severity": "high",
+      "pattern": "\\b(?:A|B|AB|0)[+-]\\b",
+      "context_required": "blut|blood|gruppe|type",
+      "examples": ["A+", "0-", "AB+"],
+      "gdpr_relevant": true,
+      "special_category": true
+    },
+    {
+      "id": "religion",
+      "name": "Religionszugehoerigkeit",
+      "category": "sensitive",
+      "severity": "critical",
+      "pattern": "(?:evangelisch|katholisch|muslimisch|juedisch|buddhistisch|hinduistisch|konfessionslos)",
+      "examples": ["evangelisch", "katholisch"],
+      "gdpr_relevant": true,
+      "special_category": true
+    },
+    {
+      "id": "ethnicity",
+      "name": "Ethnische Herkunft (Schluesselwoerter)",
+      "category": "sensitive",
+      "severity": "critical",
+      "pattern": "(?:ethnische?\\s+(?:Herkunft|Zugehoerigkeit|Abstammung)|ethnic(?:ity)?|Rasse|race)",
+      "examples": ["ethnische Herkunft"],
+      "gdpr_relevant": true,
+      "special_category": true
+    },
+    {
+      "id": "political_opinion",
+      "name": "Politische Meinung (Schluesselwoerter)",
+      "category": "sensitive",
+      "severity": "critical",
+      "pattern": "(?:Parteimitglied|Parteizugehoerigkeit|politische\\s+(?:Meinung|Ueberzeugung|Einstellung))",
+      "examples": ["Parteimitglied", "politische Meinung"],
+      "gdpr_relevant": true,
+      "special_category": true
+    },
+    {
+      "id": "trade_union",
+      "name": "Gewerkschaftszugehoerigkeit",
+      "category": "sensitive",
+      "severity": "critical",
+      "pattern": "(?:Gewerkschaft(?:smitglied)?|trade\\s+union|Betriebsrat(?:smitglied)?)",
+      "examples": ["Gewerkschaftsmitglied"],
+      "gdpr_relevant": true,
+      "special_category": true
+    },
+    {
+      "id": "sexual_orientation",
+      "name": "Sexuelle Orientierung (Schluesselwoerter)",
+      "category": "sensitive",
+      "severity": "critical",
+      "pattern": "(?:sexuelle\\s+(?:Orientierung|Identitaet)|geschlechtliche\\s+Identitaet|sexual\\s+orientation)",
+      "examples": ["sexuelle Orientierung"],
+      "gdpr_relevant": true,
+      "special_category": true
+    },
+    {
+      "id": "biometric_reference",
+      "name": "Biometrische Daten (Referenz)",
+      "category": "sensitive",
+      "severity": "critical",
+      "pattern": "(?:Fingerabdruck|fingerprint|Iris[- ]?Scan|Gesichtserkennung|facial\\s+recognition|biometrisch)",
+      "examples": ["Fingerabdruck", "Gesichtserkennung"],
+      "gdpr_relevant": true,
+      "special_category": true
+    },
+    {
+      "id": "genetic_data_reference",
+      "name": "Genetische Daten (Referenz)",
+      "category": "sensitive",
+      "severity": "critical",
+      "pattern": "(?:DNA|Genom|genetisch|Gen[- ]?Test|Gen[- ]?Analyse|genome|genetic)",
+      "examples": ["DNA-Analyse", "Gen-Test"],
+      "gdpr_relevant": true,
+      "special_category": true
+    },
+    {
+      "id": "jwt_token",
+      "name": "JWT Token",
+      "category": "technical",
+      "severity": "high",
+      "pattern": "eyJ[a-zA-Z0-9_-]+\\.eyJ[a-zA-Z0-9_-]+\\.[a-zA-Z0-9_-]+",
+      "examples": ["eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.abc123"],
+      "gdpr_relevant": false
+    }
+  ],
+
+  "severity_actions": {
+    "critical": {"action": "block_and_alert", "log": true, "redact": true},
+    "high": {"action": "redact_and_warn", "log": true, "redact": true},
+    "medium": {"action": "warn", "log": true, "redact": false},
+    "low": {"action": "log_only", "log": true, "redact": false}
+  },
+
+  "special_category_note": "Art. 9 GDPR: Besondere Kategorien personenbezogener Daten erfordern explizite Einwilligung oder gesetzliche Grundlage. Verarbeitung ist grundsaetzlich verboten."
+}

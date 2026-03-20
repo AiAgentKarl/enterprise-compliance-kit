@@ -1,0 +1,156 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-03-20",
+  "framework": "EU AI Act",
+  "description": "EU AI Act Risikokategorien und Anforderungen fuer AI-Agents",
+
+  "risk_classification": {
+    "description": "EU AI Act klassifiziert AI-Systeme in vier Risikokategorien",
+    "categories": {
+      "unacceptable": {
+        "level": 4,
+        "action": "prohibited",
+        "description": "Verbotene AI-Anwendungen",
+        "examples": [
+          "Social Scoring durch Behoerden",
+          "Real-time biometrische Fernidentifizierung (mit Ausnahmen)",
+          "Manipulation durch unterschwellige Techniken",
+          "Ausnutzung von Schwachstellen vulnerabler Gruppen",
+          "Vorhersage von Straftaten basierend auf Profiling"
+        ],
+        "requirements": ["System darf nicht eingesetzt werden"]
+      },
+      "high_risk": {
+        "level": 3,
+        "action": "strict_compliance",
+        "description": "Hochrisiko-AI mit strengen Anforderungen",
+        "examples": [
+          "Kritische Infrastruktur (Energie, Verkehr, Wasser)",
+          "Bildung und Berufsausbildung (Bewertungssysteme)",
+          "Beschaeftigung und Personalwesen",
+          "Wesentliche private und oeffentliche Dienstleistungen",
+          "Strafverfolgung",
+          "Migration und Grenzkontrolle",
+          "Rechtspflege und demokratische Prozesse"
+        ],
+        "requirements": [
+          "Risikomanagement-System implementieren",
+          "Daten-Governance sicherstellen",
+          "Technische Dokumentation erstellen",
+          "Protokollierung (Logging) implementieren",
+          "Transparenz fuer Nutzer gewaehrleisten",
+          "Menschliche Aufsicht ermoeglichen",
+          "Genauigkeit, Robustheit und Cybersicherheit",
+          "Konformitaetsbewertung durchfuehren",
+          "CE-Kennzeichnung anbringen",
+          "EU-Datenbank-Registrierung"
+        ]
+      },
+      "limited_risk": {
+        "level": 2,
+        "action": "transparency_obligations",
+        "description": "AI mit Transparenzpflichten",
+        "examples": [
+          "Chatbots und Konversations-AI",
+          "Deepfake-Erstellung",
+          "Emotionserkennung",
+          "Biometrische Kategorisierung",
+          "AI-generierte Inhalte"
+        ],
+        "requirements": [
+          "Nutzer informieren, dass sie mit AI interagieren",
+          "AI-generierte Inhalte kennzeichnen",
+          "Deepfakes als kuenstlich generiert markieren"
+        ]
+      },
+      "minimal_risk": {
+        "level": 1,
+        "action": "voluntary_codes",
+        "description": "Minimales Risiko — freiwillige Verhaltenskodizes",
+        "examples": [
+          "AI-gestuetzte Videospiele",
+          "Spam-Filter",
+          "Bestandsmanagement",
+          "Allgemeine Produktivitaetstools"
+        ],
+        "requirements": [
+          "Freiwillige Einhaltung von Verhaltenskodizes empfohlen"
+        ]
+      }
+    }
+  },
+
+  "general_purpose_ai": {
+    "description": "Regeln fuer General-Purpose AI Models (GPAI) und Agents",
+    "base_requirements": [
+      "Technische Dokumentation bereitstellen",
+      "Informationen fuer nachgelagerte Anbieter",
+      "EU-Urheberrechtsrichtlinie einhalten",
+      "Trainingsdaten-Zusammenfassung veroeffentlichen"
+    ],
+    "systemic_risk_additional": [
+      "Modell-Evaluierungen durchfuehren",
+      "Systemrisiken bewerten und mitigieren",
+      "Schwerwiegende Vorfaelle melden",
+      "Angemessene Cybersicherheit sicherstellen"
+    ]
+  },
+
+  "agent_specific_policies": {
+    "description": "Spezifische Regeln fuer AI-Agents die autonom handeln",
+    "autonomous_action_limits": {
+      "require_human_approval": [
+        "financial_transactions",
+        "data_deletion",
+        "account_modifications",
+        "external_communications",
+        "system_changes"
+      ],
+      "allow_autonomous": [
+        "data_retrieval",
+        "analysis",
+        "formatting",
+        "calculations",
+        "status_checks"
+      ]
+    },
+    "transparency": {
+      "disclose_ai_nature": true,
+      "log_all_actions": true,
+      "explain_decisions": true,
+      "provide_audit_trail": true
+    },
+    "human_oversight": {
+      "enabled": true,
+      "kill_switch": true,
+      "review_threshold": "high_risk_actions",
+      "escalation_path": ["agent", "human_reviewer", "compliance_officer"]
+    }
+  },
+
+  "compliance_timeline": {
+    "prohibited_practices": "2025-02-02",
+    "gpai_obligations": "2025-08-02",
+    "high_risk_full_compliance": "2026-08-02",
+    "all_provisions": "2027-08-02",
+    "note": "Stufenweises Inkrafttreten — Fristen beachten!"
+  },
+
+  "penalties": {
+    "prohibited_violations": {
+      "max_fine_eur": 35000000,
+      "max_fine_revenue_percent": 7,
+      "description": "Bis zu 35 Mio EUR oder 7% des weltweiten Jahresumsatzes"
+    },
+    "high_risk_violations": {
+      "max_fine_eur": 15000000,
+      "max_fine_revenue_percent": 3,
+      "description": "Bis zu 15 Mio EUR oder 3% des weltweiten Jahresumsatzes"
+    },
+    "incorrect_information": {
+      "max_fine_eur": 7500000,
+      "max_fine_revenue_percent": 1,
+      "description": "Bis zu 7,5 Mio EUR oder 1% des weltweiten Jahresumsatzes"
+    }
+  }
+}

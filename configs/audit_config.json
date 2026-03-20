@@ -1,0 +1,180 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-03-20",
+  "description": "Audit-Logging Konfiguration fuer AI-Agent Compliance",
+
+  "logging": {
+    "enabled": true,
+    "level": "INFO",
+    "format": "json",
+    "include_timestamp": true,
+    "include_request_id": true,
+    "timezone": "UTC",
+
+    "outputs": [
+      {
+        "type": "file",
+        "path": "./logs/audit.jsonl",
+        "rotation": {
+          "max_size_mb": 100,
+          "max_files": 30,
+          "compress": true
+        }
+      },
+      {
+        "type": "stdout",
+        "enabled": false,
+        "description": "Fuer Entwicklung — in Produktion deaktivieren"
+      }
+    ]
+  },
+
+  "events": {
+    "description": "Welche Ereignisse protokolliert werden",
+    "categories": {
+      "tool_invocation": {
+        "enabled": true,
+        "log_parameters": true,
+        "log_result": false,
+        "log_result_summary": true,
+        "max_result_length": 500,
+        "description": "Jeder Tool-Aufruf wird protokolliert"
+      },
+      "pii_detection": {
+        "enabled": true,
+        "log_pattern_id": true,
+        "log_matched_text": false,
+        "log_redacted_text": true,
+        "description": "PII-Erkennung wird protokolliert (ohne Klartext)"
+      },
+      "policy_violation": {
+        "enabled": true,
+        "log_policy_id": true,
+        "log_action_taken": true,
+        "alert_on_critical": true,
+        "description": "Richtlinienverstöße werden protokolliert und gemeldet"
+      },
+      "data_access": {
+        "enabled": true,
+        "log_data_source": true,
+        "log_data_type": true,
+        "log_purpose": true,
+        "description": "Datenzugriffe protokollieren (Art. 30 GDPR)"
+      },
+      "consent_change": {
+        "enabled": true,
+        "log_previous_state": true,
+        "log_new_state": true,
+        "description": "Einwilligungsaenderungen protokollieren"
+      },
+      "error": {
+        "enabled": true,
+        "log_stack_trace": false,
+        "log_error_message": true,
+        "description": "Fehler protokollieren (ohne Stack Traces in Produktion)"
+      },
+      "authentication": {
+        "enabled": true,
+        "log_success": true,
+        "log_failure": true,
+        "log_ip_address": false,
+        "description": "Authentifizierungsereignisse protokollieren"
+      }
+    }
+  },
+
+  "retention": {
+    "default_days": 365,
+    "policies": {
+      "audit_logs": {
+        "retention_days": 365,
+        "description": "Audit-Logs 1 Jahr aufbewahren"
+      },
+      "pii_detection_logs": {
+        "retention_days": 90,
+        "anonymize_after_days": 30,
+        "description": "PII-Logs nach 30 Tagen anonymisieren, nach 90 Tagen loeschen"
+      },
+      "error_logs": {
+        "retention_days": 90,
+        "description": "Fehler-Logs 3 Monate aufbewahren"
+      },
+      "access_logs": {
+        "retention_days": 180,
+        "description": "Zugriffsprotokoll 6 Monate aufbewahren"
+      }
+    },
+    "deletion_method": "secure_overwrite",
+    "deletion_verification": true
+  },
+
+  "security": {
+    "encryption": {
+      "at_rest": true,
+      "algorithm": "AES-256-GCM",
+      "key_rotation_days": 90,
+      "description": "Logs werden verschluesselt gespeichert"
+    },
+    "integrity": {
+      "hash_algorithm": "SHA-256",
+      "chain_hashes": true,
+      "description": "Hash-Kette zur Manipulation-Erkennung"
+    },
+    "access_control": {
+      "require_authentication": true,
+      "allowed_roles": ["compliance_officer", "admin", "auditor"],
+      "log_access_attempts": true,
+      "description": "Zugriff nur fuer autorisierte Rollen"
+    }
+  },
+
+  "alerting": {
+    "enabled": true,
+    "channels": [
+      {
+        "type": "email",
+        "enabled": false,
+        "recipients": [],
+        "description": "E-Mail-Benachrichtigungen (Empfaenger konfigurieren)"
+      },
+      {
+        "type": "webhook",
+        "enabled": false,
+        "url": "",
+        "description": "Webhook fuer Integration mit Monitoring-Tools"
+      }
+    ],
+    "triggers": {
+      "critical_pii_detected": {
+        "enabled": true,
+        "cooldown_minutes": 5,
+        "description": "Alert bei kritischen PII-Erkennungen"
+      },
+      "policy_violation_rate": {
+        "enabled": true,
+        "threshold_per_hour": 10,
+        "description": "Alert bei zu vielen Richtlinienverstössen pro Stunde"
+      },
+      "kill_switch_activated": {
+        "enabled": true,
+        "cooldown_minutes": 0,
+        "description": "Sofortige Benachrichtigung bei Kill-Switch"
+      }
+    }
+  },
+
+  "compliance_reports": {
+    "enabled": true,
+    "schedule": "monthly",
+    "include": [
+      "total_tool_invocations",
+      "pii_detections_by_category",
+      "policy_violations_by_type",
+      "data_access_summary",
+      "consent_changes",
+      "error_rate"
+    ],
+    "format": "json",
+    "description": "Monatlicher Compliance-Bericht"
+  }
+}

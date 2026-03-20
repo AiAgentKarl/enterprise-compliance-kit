@@ -1,0 +1,148 @@
+{
+  "version": "1.0.0",
+  "last_updated": "2026-03-20",
+  "framework": "GDPR",
+  "description": "Vorkonfigurierte GDPR-Guardrails fuer AI-Agents",
+
+  "data_processing_rules": {
+    "purpose_limitation": {
+      "enabled": true,
+      "description": "Daten nur fuer den definierten Zweck verarbeiten",
+      "allowed_purposes": [
+        "user_request_fulfillment",
+        "system_operation",
+        "security_monitoring",
+        "error_logging"
+      ],
+      "blocked_purposes": [
+        "profiling_without_consent",
+        "automated_decision_making",
+        "cross_purpose_data_sharing",
+        "marketing_without_consent"
+      ]
+    },
+    "data_minimization": {
+      "enabled": true,
+      "description": "Nur notwendige Daten verarbeiten",
+      "rules": [
+        {
+          "name": "strip_unnecessary_pii",
+          "action": "redact",
+          "description": "PII aus Agent-Kontext entfernen wenn nicht fuer Aufgabe noetig"
+        },
+        {
+          "name": "limit_data_retention_in_context",
+          "action": "warn",
+          "max_context_items": 100,
+          "description": "Warnung bei zu vielen Datenpunkten im Agent-Kontext"
+        },
+        {
+          "name": "no_bulk_data_collection",
+          "action": "block",
+          "description": "Massensammlung personenbezogener Daten blockieren"
+        }
+      ]
+    },
+    "storage_limitation": {
+      "enabled": true,
+      "default_retention_days": 30,
+      "max_retention_days": 365,
+      "retention_policies": {
+        "conversation_logs": {"retention_days": 30, "anonymize_after": 7},
+        "audit_logs": {"retention_days": 365, "anonymize_after": 90},
+        "error_logs": {"retention_days": 90, "anonymize_after": 30},
+        "pii_data": {"retention_days": 0, "description": "Sofort loeschen nach Verarbeitung"}
+      }
+    },
+    "integrity_and_confidentiality": {
+      "enabled": true,
+      "encryption_at_rest": true,
+      "encryption_in_transit": true,
+      "min_encryption_standard": "AES-256",
+      "tls_min_version": "1.2"
+    }
+  },
+
+  "consent_management": {
+    "require_explicit_consent": true,
+    "consent_categories": [
+      {
+        "id": "data_processing",
+        "name": "Datenverarbeitung",
+        "required": true,
+        "description": "Zustimmung zur Verarbeitung personenbezogener Daten"
+      },
+      {
+        "id": "automated_decisions",
+        "name": "Automatisierte Entscheidungen",
+        "required": true,
+        "description": "Zustimmung zu automatisierten Entscheidungen (Art. 22 GDPR)"
+      },
+      {
+        "id": "data_transfer",
+        "name": "Datenuebermittlung",
+        "required": false,
+        "description": "Zustimmung zur Uebermittlung an Drittlaender"
+      },
+      {
+        "id": "profiling",
+        "name": "Profiling",
+        "required": false,
+        "description": "Zustimmung zum Profiling"
+      }
+    ]
+  },
+
+  "data_subject_rights": {
+    "right_to_access": {
+      "enabled": true,
+      "response_time_days": 30,
+      "description": "Auskunftsrecht — Betroffene koennen ihre Daten anfordern"
+    },
+    "right_to_rectification": {
+      "enabled": true,
+      "response_time_days": 30,
+      "description": "Recht auf Berichtigung unrichtiger Daten"
+    },
+    "right_to_erasure": {
+      "enabled": true,
+      "response_time_days": 30,
+      "description": "Recht auf Loeschung (Recht auf Vergessenwerden)"
+    },
+    "right_to_data_portability": {
+      "enabled": true,
+      "export_formats": ["json", "csv"],
+      "description": "Recht auf Datenuebertragbarkeit"
+    },
+    "right_to_object": {
+      "enabled": true,
+      "auto_stop_processing": true,
+      "description": "Widerspruchsrecht gegen Verarbeitung"
+    },
+    "right_to_restriction": {
+      "enabled": true,
+      "description": "Recht auf Einschraenkung der Verarbeitung"
+    }
+  },
+
+  "breach_notification": {
+    "enabled": true,
+    "notify_authority_hours": 72,
+    "notify_affected_immediately": true,
+    "severity_levels": {
+      "critical": {"notify_authority": true, "notify_affected": true},
+      "high": {"notify_authority": true, "notify_affected": true},
+      "medium": {"notify_authority": true, "notify_affected": false},
+      "low": {"notify_authority": false, "notify_affected": false}
+    }
+  },
+
+  "third_party_sharing": {
+    "enabled": false,
+    "require_dpa": true,
+    "allowed_transfers": [],
+    "blocked_countries": [],
+    "require_adequacy_decision": true,
+    "description": "Datenweitergabe an Dritte nur mit DPA und Angemessenheitsbeschluss"
+  }
+}
